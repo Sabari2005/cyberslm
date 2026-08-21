@@ -1,0 +1,13 @@
+# CyberSLM-2 dependencies
+# pip install -r cyberslm2/requirements.txt
+
+# scaled_dot_product_attention needs >= 2.0; enable_gqa (no KV expand) needs >= 2.5
+torch>=2.5.0
+
+# BPE tokenizer with byte-fallback, digit splitting and user-defined symbols
+sentencepiece>=0.2.0
+
+numpy>=1.24.0
+
+# Optional: throughput/memory logging during training
+psutil>=5.9.0

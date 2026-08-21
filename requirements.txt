@@ -1,0 +1,17 @@
+# CyberSLM — consolidated Python dependencies
+# Install with:  pip install -r requirements.txt
+#
+# Covers all stages: tokenizer training, preprocessing, pretraining, and SFT.
+# Per-subproject requirements files remain for isolated installs.
+
+# --- Core deep learning ---
+torch>=2.0.0            # scaled_dot_product_attention requires torch >= 2.0
+
+# --- Tokenizer ---
+sentencepiece>=0.2.0    # BPE tokenizer with byte-fallback
+
+# --- Numerical ---
+numpy>=1.24.0
+
+# --- Optional: system metrics during training (psutil is used if present) ---
+psutil>=5.9.0

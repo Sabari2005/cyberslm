@@ -1,0 +1,16 @@
+step	val_loss	source
+500	3.995694	live log
+750	3.472453	live log
+1000	3.088996	live log
+1250	2.772742	live log
+1500	2.584838	live log
+1750	2.481647	live log
+2000	2.396855	live log
+4250	2.085800	final log
+4500	2.068900	final log
+4750	2.057600	final log
+5000	2.053700	final log
+5250	2.043800	final log
+5500	2.034800	final log
+5750	2.029300	final log
+6000	2.024698	final log

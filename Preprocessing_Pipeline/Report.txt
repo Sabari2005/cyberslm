@@ -1,0 +1,283 @@
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> python tokenizer_analyzer.py `
+>>     --model "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\tokenizer_output\tokenizer.model" `
+>>     --vocab "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\tokenizer_output\tokenizer.vocab" `
+>>     --top-k 50
+════════════════════════════════════════════════════════════════════════
+  TOKENIZER ANALYSIS REPORT
+════════════════════════════════════════════════════════════════════════
+
+[1] VOCABULARY STATISTICS
+────────────────────────────────────────────────────────────────────────
+  Vocabulary size          :     32,000
+  Normal (BPE) pieces      :     31,739  (99.18%)
+  Byte fallback pieces     :        256  (0.80%)
+  Control pieces           :          3  (0.01%)
+  User-defined pieces      :          1  (0.00%)
+  Unknown pieces           :          1
+  Vocabulary utilization   :      99.18%
+  Unique chars covered     :        318
+  Average token length     :      5.004 chars
+
+[2] SPECIAL TOKENS
+────────────────────────────────────────────────────────────────────────
+  PAD    id=0       piece='<pad>'
+  UNK    id=1       piece='<unk>'
+  BOS    id=2       piece='<bos>'
+  EOS    id=3       piece='<eos>'
+
+[3] TOP 50 VOCABULARY PIECES (by score)
+────────────────────────────────────────────────────────────────────────
+      ID       Score  Piece
+      ──       ─────  ─────
+       ?      0.0000  '<pad>'
+       1      0.0000  '<unk>'
+       2      0.0000  '<bos>'
+       3      0.0000  '<eos>'
+       4      0.0000  '<0x00>'
+       5      0.0000  '<0x01>'
+       6      0.0000  '<0x02>'
+       7      0.0000  '<0x03>'
+       8      0.0000  '<0x04>'
+       9      0.0000  '<0x05>'
+      10      0.0000  '<0x06>'
+      11      0.0000  '<0x07>'
+      12      0.0000  '<0x08>'
+      13      0.0000  '<0x09>'
+      14      0.0000  '<0x0A>'
+      15      0.0000  '<0x0B>'
+      16      0.0000  '<0x0C>'
+      17      0.0000  '<0x0D>'
+      18      0.0000  '<0x0E>'
+      19      0.0000  '<0x0F>'
+      20      0.0000  '<0x10>'
+      21      0.0000  '<0x11>'
+      22      0.0000  '<0x12>'
+      23      0.0000  '<0x13>'
+      24      0.0000  '<0x14>'
+      25      0.0000  '<0x15>'
+      26      0.0000  '<0x16>'
+      27      0.0000  '<0x17>'
+      28      0.0000  '<0x18>'
+      29      0.0000  '<0x19>'
+      30      0.0000  '<0x1A>'
+      31      0.0000  '<0x1B>'
+      32      0.0000  '<0x1C>'
+      33      0.0000  '<0x1D>'
+      34      0.0000  '<0x1E>'
+      35      0.0000  '<0x1F>'
+      36      0.0000  '<0x20>'
+      37      0.0000  '<0x21>'
+      38      0.0000  '<0x22>'
+      39      0.0000  '<0x23>'
+      40      0.0000  '<0x24>'
+      41      0.0000  '<0x25>'
+      42      0.0000  '<0x26>'
+      43      0.0000  '<0x27>'
+      44      0.0000  '<0x28>'
+      45      0.0000  '<0x29>'
+      46      0.0000  '<0x2A>'
+      47      0.0000  '<0x2B>'
+      48      0.0000  '<0x2C>'
+      49      0.0000  '<0x2D>'
+
+[4] ENCODE → DECODE ROUND-TRIP VERIFICATION
+────────────────────────────────────────────────────────────────────────
+  [ 1] ✓ PASS  tokens=13     'The quick brown fox jumps over the lazy dog.'
+  [ 2] ✓ PASS  tokens=14     'CVE-2024-1234: Buffer overflow in libssl allows remote code '
+  [ 3] ✓ PASS  tokens=14     "SELECT * FROM users WHERE id = 1 OR '1'='1';"
+  [ 4] ✓ PASS  tokens=22     "#!/bin/bash↵echo 'Hello, World!'↵netstat -tulnp | grep LISTE"
+  [ 5] ✓ PASS  tokens=20     "def exploit(target: str) -> bytes:↵    return b'\\x90' * 100"
+  [ 6] ✓ PASS  tokens=14     'MITRE ATT&CK T1059.001: PowerShell execution via encoded com'
+  [ 7] ✓ PASS  tokens=31     'Привет мир! 你好世界! مرحبا بالعالم'
+  [ 8] ✓ PASS  tokens=19     '🔒 Encryption: AES-256-GCM with PBKDF2 key derivation.'
+
+  All round-trip verifications passed.
+
+════════════════════════════════════════════════════════════════════════
+
+
+
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> python dataset_tokenizer.py `
+>>     --input "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\Final.jsonl" `
+>>     --model "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\tokenizer_output\tokenizer.model" `
+>>     --output-dir "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache" `
+>>     --add-bos `
+>>     --add-eos
+20:29:40  INFO     Tokenizer loaded: vocab_size=32000
+20:29:40  INFO     Input   : C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\Final.jsonl  (0.78 GB)
+20:29:40  INFO     Output  : C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache
+20:29:40  INFO     Workers : 7
+20:29:40  INFO     Batch   : 1024 docs
+20:30:40  INFO     processed     100352 docs |     26765594 tokens | 0.44 Mtok/s
+20:31:00  INFO     processed     200704 docs |     38583185 tokens | 0.48 Mtok/s
+20:32:38  INFO     processed     300050 docs |    102388558 tokens | 0.57 Mtok/s
+20:33:07  INFO     processed     400402 docs |    121554076 tokens | 0.59 Mtok/s
+20:33:42  INFO     processed     500763 docs |    144438140 tokens | 0.60 Mtok/s
+20:34:27  INFO     processed     600091 docs |    172707491 tokens | 0.60 Mtok/s
+20:35:29  INFO     ────────────────────────────────────────────────────────────
+20:35:29  INFO     Total lines     :       665113
+20:35:29  INFO     Valid documents :       665067
+20:35:29  INFO     Skipped         :           46
+20:35:29  INFO     Total tokens    :    204501030  (0.20 B)
+20:35:29  INFO     Elapsed         :      349.1 s
+20:35:29  INFO     Throughput      :       0.59 Mtok/s
+20:35:29  INFO     tokens.bin      : C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache\tokens.bin
+20:35:29  INFO     tokens.idx      : C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache\tokens.idx
+20:35:29  INFO     tokenize.log    : C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache\tokenize.log
+20:35:29  WARNING  Skip breakdown:
+20:35:29  WARNING    empty_text                     : 46
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> 
+
+
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> python dataset_stats.py `
+>>     --cache-dir "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache" `
+>>     --context-len 4096 `
+>>     --histogram-bins 20 `
+>>     --output "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\stats.json"
+20:36:01  INFO     Reading index: 665068 entries
+20:36:01  INFO     Loaded 665067 document lengths in 0.01s
+════════════════════════════════════════════════════════════════════════
+  DATASET STATISTICS REPORT
+════════════════════════════════════════════════════════════════════════
+
+[1] DOCUMENT COUNTS
+────────────────────────────────────────────────────────────────────────
+  Total documents          :        665,067
+  Valid (non-empty)        :        665,067
+  Empty documents          :              0
+
+[2] TOKEN STATISTICS
+────────────────────────────────────────────────────────────────────────
+  Total tokens             :    204,501,030  (0.205 B)
+  Mean   tokens/doc        :          307.5
+  Median tokens/doc        :          140.0
+  Std dev                  :        13522.4
+  Min    tokens/doc        :              3
+  Max    tokens/doc        :     10,767,954
+  P25    tokens/doc        :          108.0
+  P75    tokens/doc        :          194.0
+  P95    tokens/doc        :          781.0
+  P99    tokens/doc        :         3187.0
+
+[3] CONTEXT LENGTH ANALYSIS  (context_len = 4096)
+────────────────────────────────────────────────────────────────────────
+  Docs exceeding 4,096 tokens  :      3,399  (0.51%)
+  Docs within   4,096 tokens  :    661,668  (99.49%)
+
+[4] DOCUMENT LENGTH HISTOGRAM
+────────────────────────────────────────────────────────────────────────
+       lo        hi  │ Distribution
+        3 –  538400  │ ██████████████████████████████████████████████████    665,061  (100.0%)
+   538400 – 1076798  │                                                             4  (  0.0%)
+  1076798 – 1615195  │                                                             1  (  0.0%)
+  1615195 – 2153593  │                                                             0  (  0.0%)
+  2153593 – 2691990  │                                                             0  (  0.0%)
+  2691990 – 3230388  │                                                             0  (  0.0%)
+  3230388 – 3768785  │                                                             0  (  0.0%)
+  3768785 – 4307183  │                                                             0  (  0.0%)
+  4307183 – 4845580  │                                                             0  (  0.0%)
+  4845580 – 5383978  │                                                             0  (  0.0%)
+  5383978 – 5922376  │                                                             0  (  0.0%)
+  5922376 – 6460773  │                                                             0  (  0.0%)
+  6460773 – 6999171  │                                                             0  (  0.0%)
+  6999171 – 7537568  │                                                             0  (  0.0%)
+  7537568 – 8075966  │                                                             0  (  0.0%)
+  8075966 – 8614363  │                                                             0  (  0.0%)
+  8614363 – 9152761  │                                                             0  (  0.0%)
+  9152761 – 9691158  │                                                             0  (  0.0%)
+  9691158 – 10229556  │                                                             0  (  0.0%)
+  10229556 – 10767954  │                                                             1  (  0.0%)
+
+[5] TOKEN RANGE BUCKETS
+────────────────────────────────────────────────────────────────────────
+         1–127  │ █████████████████████████████████████       267,415  ( 40.2%)
+       128–255  │ ████████████████████████████████████████    286,956  ( 43.1%)
+       256–511  │ ███████                                      52,682  (  7.9%)
+      512–1023  │ ████                                         33,698  (  5.1%)
+     1024–2047  │ █                                            10,256  (  1.5%)
+     2048–4095  │ █                                            10,659  (  1.6%)
+     4096–8191  │                                               2,503  (  0.4%)
+         8192+  │                                                 898  (  0.1%)
+
+════════════════════════════════════════════════════════════════════════
+20:36:01  INFO     Stats written to C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\stats.json
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> 
+
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> python dataset_builder.py `
+>>     --cache-dir "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache" `
+>>     --output-dir "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\data" `
+>>     --val-ratio 0.05 `
+>>     --seed 42
+20:36:54  INFO     Loading offset index …
+20:36:54  INFO     Documents in cache: 665067
+20:36:54  INFO     Splitting: val_ratio=0.050  seed=42
+20:36:54  INFO     Split: train=631814 docs  val=33253 docs
+20:36:54  INFO     Writing train.bin …
+20:36:55  INFO     train:  17.2%    0.07 GB  0.17 GB/s
+20:36:55  INFO     train:  34.7%    0.14 GB  0.18 GB/s
+20:36:55  INFO     train:  51.9%    0.20 GB  0.19 GB/s
+20:36:56  INFO     train:  69.1%    0.27 GB  0.18 GB/s
+20:36:56  INFO     train:  86.4%    0.34 GB  0.18 GB/s
+20:36:56  INFO     train.bin: 194800619 tokens  (0.195 B)  0.390 GB
+20:36:56  INFO     Writing val.bin …
+20:36:57  INFO     val.bin: 9700411 tokens  (0.010 B)  0.019 GB
+20:36:57  INFO     ────────────────────────────────────────────────────────────
+20:36:57  INFO     train.bin     : 194800619 tokens  (0.195 B)
+20:36:57  INFO     val.bin       : 9700411 tokens  (0.010 B)
+20:36:57  INFO     Actual val %  : 4.743%
+20:36:57  INFO     split.json    : C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\data\split.json
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> 
+
+
+
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> python verify.py `
+>>     --model "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\tokenizer_output\tokenizer.model" `
+>>     --cache-dir "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\cache" `
+>>     --data-dir "C:\Users\abina\OneDrive\Desktop\SLm Dataset\tokenizer\data"
+======================================================================
+  PIPELINE VERIFICATION
+======================================================================
+────────────────────── 1. TOKENIZER ROUND-TRIP ───────────────────────
+  ✓ PASS  Round-trip (10 samples)  failures=0
+───────────────────── 2. BINARY CACHE INTEGRITY ──────────────────────
+  ✓ PASS  tokens.bin exists
+  ✓ PASS  tokens.idx exists
+  ✓ PASS  tokens.bin size % 2 == 0  size=409002060
+  ✓ PASS  tokens.idx size % 8 == 0  size=5320544
+  ✓ PASS  index has ≥ 2 entries (≥ 1 doc)  entries=665068
+  ✓ PASS  offsets monotone
+  ✓ PASS  final offset == tokens.bin size  offset=409002060  file=409002060
+  ✓ PASS  Cache summary  docs=665,067  tokens=204,501,030
+────────────────────── 3. SPLIT FILE INTEGRITY ───────────────────────
+  ✓ PASS  train.bin exists
+  ✓ PASS  val.bin exists
+  ✓ PASS  split.json exists
+  ✓ PASS  train.bin size % 2 == 0  size=389601238
+  ✓ PASS  val.bin size % 2 == 0  size=19400822
+  ✓ PASS  train token count matches split.json  json=194,800,619  file=194,800,619
+  ✓ PASS  val token count matches split.json  json=9,700,411  file=9,700,411
+  ✓ PASS  train/val doc index sets are disjoint  overlap=0
+  ✓ PASS  all documents assigned to a split  assigned=665,067  total=665,067
+  ✓ PASS  Split ratio  train=194,800,619  val=9,700,411  val%=4.74
+──────────────────────── 4. SPLIT DETERMINISM ────────────────────────
+  ✓ PASS  Regenerated train split is identical
+  ✓ PASS  Regenerated val split is identical
+───────────────────── 5. TOKEN COUNT CONSISTENCY ─────────────────────
+  ✓ PASS  train+val token count ≤ cache token count  split=204,501,030  cache=204,501,030
+───────────────────── 6. TOKENIZER COMPATIBILITY ─────────────────────
+  ✓ PASS  vocab_size (32000) fits in uint16  max_uint16=65535
+  ✓ PASS  BOS id is valid  bos_id=2
+  ✓ PASS  EOS id is valid  eos_id=3
+────────────────── 7. DATALOADER SAMPLE CORRECTNESS ──────────────────
+  ✓ PASS  x[i+1] == y[i] alignment (20 samples)  failures=0
+────────────────────────────── SUMMARY ───────────────────────────────
+  ✓ PASS  roundtrip
+  ✓ PASS  cache
+  ✓ PASS  split_files
+  ✓ PASS  determinism
+  ✓ PASS  token_counts
+  ✓ PASS  compat
+  ✓ PASS  dataloader
+======================================================================
+  All checks passed.
+PS C:\Users\abina\OneDrive\Desktop\SLm Dataset\Preprocessing_Pipeline> 

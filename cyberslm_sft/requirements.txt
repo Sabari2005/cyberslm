@@ -1,0 +1,11 @@
+# CyberSLM SFT — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Core deep learning
+torch>=2.0.0
+
+# Tokenizer (SentencePiece BPE — must match Stage 1 tokenizer)
+sentencepiece>=0.1.99
+
+# Numerical (already a torch dependency, listed for clarity)
+numpy>=1.24.0

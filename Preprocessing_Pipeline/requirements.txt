@@ -1,0 +1,6 @@
+# Dataset processing pipeline dependencies
+# Install: pip install -r requirements.txt
+
+sentencepiece
+numpy
+torch
