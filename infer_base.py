@@ -45,7 +45,7 @@ def main() -> int:
     ap.add_argument("--prompt", "-p", default="SQL injection is")
     ap.add_argument("--interactive", "-i", action="store_true")
     ap.add_argument("--checkpoint", "-c", default=str(_HERE / "models" / "base.pt"))
-    ap.add_argument("--tokenizer", default=str(_HERE / "tokenizer" / "tokenizer.model"))
+    ap.add_argument("--tokenizer", default=str(_HERE / "tokenizer" / "tokenizer_output" / "tokenizer.model"))
     ap.add_argument("--max-new-tokens", "-m", type=int, default=120)
     ap.add_argument("--temperature", "-t", type=float, default=0.8,
                     help="0 = greedy/deterministic")
@@ -64,6 +64,10 @@ def main() -> int:
     ckpt = Path(args.checkpoint)
     if not ckpt.exists():
         print(f"Checkpoint not found: {ckpt}", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("Weights are not stored in this repository. Get them from:", file=sys.stderr)
+        print("  https://huggingface.co/sabari2005/cyberslm-base", file=sys.stderr)
+        print("or pass --checkpoint /path/to/checkpoint.pt", file=sys.stderr)
         return 1
     sp = spm.SentencePieceProcessor()
     sp.load(args.tokenizer)

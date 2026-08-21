@@ -4,7 +4,9 @@ A complete, from-scratch pipeline for a 33.5M-parameter decoder-only language mo
 specialised for cybersecurity — raw corpus → tokenizer → pretraining → instruction tuning →
 evaluation, with every stage machine-checked.
 
-**Weights:** [huggingface.co/sabari2005/cyberslm](https://huggingface.co/sabari2005/cyberslm)
+**Weights:** [cyberslm-base](https://huggingface.co/sabari2005/cyberslm-base) (continuation) · [cyberslm-instruct](https://huggingface.co/sabari2005/cyberslm-instruct) (question answering)
+
+This repository holds **code only** — the training corpus and model weights are not in git.
 
 ## Results
 
@@ -98,6 +100,10 @@ SLm Dataset/
 ## Quick start
 
 ```bash
+# 0. run a trained model (download weights from Hugging Face first)
+python infer_chat.py --checkpoint models/instruct.pt --prompt "What is SQL injection?"
+python infer_base.py --checkpoint models/base.pt   --prompt "SQL injection is"
+
 # 1. verify the model + data path is correct (CPU, seconds, no training)
 python cyberslm/scripts/verify.py
 
