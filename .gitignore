@@ -51,14 +51,12 @@ runs/
 .modal.toml
 
 # ---- Final deliverable: ship the code, not the weights ----
-Final/
 
 # ---- Never publish the corpus or weights ----
 # This branch is the public, code-only branch. Dataset_corpus/ is 745 MB and
 # contains a 184 MB file; GitHub rejects anything over 100 MB, and it must not
 # be published in any case. Listed explicitly so `git add -A` cannot pick it up.
 Dataset_corpus/
-Final/
 runs/
 *.jsonl
 
@@ -68,3 +66,6 @@ runs/
 *.zip
 tokenizer/stats.json
 tokenizer/tokenizer_output/
+
+# Local weights store (published on Hugging Face, never in git)
+models/

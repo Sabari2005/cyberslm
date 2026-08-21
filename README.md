@@ -101,8 +101,9 @@ SLm Dataset/
 
 ```bash
 # 0. run a trained model (download weights from Hugging Face first)
-python infer_chat.py --checkpoint models/instruct.pt --prompt "What is SQL injection?"
-python infer_base.py --checkpoint models/base.pt   --prompt "SQL injection is"
+#    download weights from Hugging Face into models/ first
+python infer_chat.py --prompt "What is SQL injection?"   # instruct model
+python infer_base.py --prompt "SQL injection is"         # base model
 
 # 1. verify the model + data path is correct (CPU, seconds, no training)
 python cyberslm/scripts/verify.py
