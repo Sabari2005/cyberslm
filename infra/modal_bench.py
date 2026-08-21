@@ -31,7 +31,12 @@ image = (
     # at build time without it.
     .apt_install("git")
     .pip_install(
-        "torch", "transformers", "sentencepiece", "protobuf",
+        "torch",
+        # lm-eval 0.4.9 imports VLM classes that moved in transformers 5.x, so
+        # its models/__init__ fails at import against transformers 5.15. Pin to
+        # the 4.x line the harness targets.
+        "transformers<5",
+        "sentencepiece", "protobuf",
         "datasets", "accelerate", "huggingface_hub", "tqdm",
     )
     # Use a tagged PyPI release rather than git main. main (0.4.13.dev0) uses
