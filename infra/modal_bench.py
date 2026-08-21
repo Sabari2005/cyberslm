@@ -23,28 +23,40 @@ from __future__ import annotations
 
 import modal
 
-app = modal.App("cyberslm-bench")
-
 # lm-eval pulls a large dependency tree; pin nothing so the resolver picks a
 # consistent set, and log the exact versions in the results for reproducibility.
 image = (
     modal.Image.debian_slim(python_version="3.11")
+    # debian_slim ships no git, so the pip-from-git install below fails
+    # at build time without it.
+    .apt_install("git")
     .pip_install(
         "torch", "transformers", "sentencepiece", "protobuf",
         "datasets", "accelerate", "huggingface_hub", "tqdm",
     )
-    # Install the harness from its canonical source. `pip install "lm-eval[hf]"`
-    # completed without error but left no lm_eval module -- pip skips unknown
-    # extras with only a warning, so the failure was silent until the GPU
-    # function crashed on import.
+    # Use a tagged PyPI release rather than git main. main (0.4.13.dev0) uses
+    # TypedDict(extra_items=...) from PEP 728, which needs a newer
+    # typing_extensions than the resolved dependency set provides and dies with
+    # "_TypedDictMeta.__new__() got an unexpected keyword argument extra_items".
+    #
+    # NOTE: an earlier comment here blamed pip for silently skipping the [hf]
+    # extra. That was wrong. lm-eval was never installed because the App was
+    # declared without image=, so every function ran on Modal's bare default
+    # image. See the app declaration below.
+    .pip_install("lm-eval==0.4.9", "typing_extensions>=4.12")
     .run_commands(
-        "pip install --no-cache-dir "
-        "git+https://github.com/EleutherAI/lm-evaluation-harness.git",
         # Fail the IMAGE BUILD, not a billed GPU run, if the import is broken.
         "python -c \"import lm_eval; print('lm_eval', lm_eval.__version__)\"",
     )
     .add_local_dir("bench", "/root/bench")
 )
+
+# The image MUST be attached here. Declaring `modal.App("name")` without
+# it silently runs every function on Modal's bare default image: the
+# diagnostic showed python 3.12 with no torch, no transformers and no
+# lm_eval, and the build-time import check never ran because the image was
+# never built.
+app = modal.App("cyberslm-bench", image=image)
 
 results_vol = modal.Volume.from_name("cyberslm-bench-results", create_if_missing=True)
 VOLUMES = {"/results": results_vol}
@@ -158,6 +170,28 @@ def run_arithmark(model_id: str, tag: str, version: str = "3"):
     results_vol.commit()
     return {"model": model_id, "tag": tag, "version": version,
             "stdout_tail": proc.stdout[-3000:], "files": found}
+
+
+@app.function(timeout=15 * 60)
+def diagnose():
+    """Report what the runtime interpreter can actually see."""
+    import subprocess, sys
+    print("sys.executable:", sys.executable, flush=True)
+    print("sys.path:", sys.path, flush=True)
+    for mod in ("torch", "transformers", "lm_eval", "datasets"):
+        try:
+            m = __import__(mod)
+            print(f"  {mod}: OK {getattr(m, '__version__', '?')} at {getattr(m, '__file__', '?')}",
+                  flush=True)
+        except Exception as e:
+            print(f"  {mod}: FAIL {type(e).__name__}: {e}", flush=True)
+    out = subprocess.run([sys.executable, "-m", "pip", "list"],
+                         capture_output=True, text=True)
+    print("pip list (grep eval/harness):", flush=True)
+    for line in out.stdout.splitlines():
+        if "eval" in line.lower() or "harness" in line.lower():
+            print("   ", line, flush=True)
+    return "ok"
 
 
 @app.function(volumes=VOLUMES, timeout=30 * 60)
