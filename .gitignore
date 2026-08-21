@@ -69,3 +69,8 @@ tokenizer/tokenizer_output/
 
 # Local weights store (published on Hugging Face, never in git)
 models/
+
+# ---- Benchmark artifacts ----
+hf_export/
+bench/*/arithmark*.jsonl
+bench/*/*.jsonl
