@@ -63,3 +63,10 @@ Final/models/
 Final/tokenizer/
 runs/
 *.jsonl
+
+# ---- Local editor / OS / archives ----
+.claude/
+.vscode/
+*.zip
+tokenizer/stats.json
+tokenizer/tokenizer_output/
