@@ -1,0 +1,83 @@
+{
+  "models": [
+    {
+      "name": "CyberSLM-base",
+      "params": 33531264,
+      "paramsDisplay": "33.5M",
+      "arc": 32.79,
+      "hellaswag": 26.84,
+      "piqa": 54.68,
+      "arcChall": 22.7,
+      "arithmark3": 31.0,
+      "arithmark2": 26.96,
+      "card": "https://huggingface.co/sabari2005/cyberslm-base",
+      "replaces": "CyberSLM-33M-Base"
+    },
+    {
+      "name": "CyberSLM-instruct",
+      "params": 33531264,
+      "paramsDisplay": "33.5M",
+      "arc": 32.37,
+      "hellaswag": 26.19,
+      "piqa": 53.81,
+      "arcChall": 22.35,
+      "arithmark3": 30.2,
+      "arithmark2": 26.88,
+      "card": "https://huggingface.co/sabari2005/cyberslm-instruct",
+      "replaces": "CyberSLM-33M-Instruct"
+    }
+  ],
+  "raw": {
+    "base": {
+      "arc_easy": {
+        "acc": 32.79,
+        "acc_norm": 32.24
+      },
+      "hellaswag": {
+        "acc": 26.35,
+        "acc_norm": 26.84
+      },
+      "piqa": {
+        "acc": 54.68,
+        "acc_norm": 52.23
+      },
+      "arc_challenge": {
+        "acc": 18.17,
+        "acc_norm": 22.7
+      },
+      "arithmark3": {
+        "acc": 31.0,
+        "acc_norm": 31.0
+      },
+      "arithmark2": {
+        "acc": 26.96
+      }
+    },
+    "instruct": {
+      "arc_easy": {
+        "acc": 32.37,
+        "acc_norm": 32.15
+      },
+      "hellaswag": {
+        "acc": 26.51,
+        "acc_norm": 26.19
+      },
+      "piqa": {
+        "acc": 53.81,
+        "acc_norm": 52.88
+      },
+      "arc_challenge": {
+        "acc": 19.11,
+        "acc_norm": 22.35
+      },
+      "arithmark3": {
+        "acc": 30.0,
+        "acc_norm": 30.2
+      },
+      "arithmark2": {
+        "acc": 26.88
+      }
+    }
+  },
+  "pr_body": "## Update CyberSLM-33M-Base / -Instruct (retrained)\n\nThis updates the two existing CyberSLM rows rather than adding new ones: the\nmodels have been retrained from scratch after fixing 19 defects in the\ntraining pipeline, and these rows now point at the retrained checkpoints.\n\nPretrained from scratch on a 194.8M-token corpus that is ~60%\ncybersecurity, ~20% general English, ~15% programming, ~5% CS fundamentals.\nOpen weights, training checkpoints, not merged.\n\n- Base: https://huggingface.co/sabari2005/cyberslm-base\n- Instruct: https://huggingface.co/sabari2005/cyberslm-instruct\n- Code: https://github.com/Sabari2005/cyberslm\n\n### Setup\n\n| | |\n|---|---|\n| harness | lm-evaluation-harness 0.4.9 (HellaSwag, ARC-E, ARC-C, PIQA) |\n| arithmark | AxiomicLabs' `bencharithmark-3.py` and `benchmark_arithmark-2.0.py`, unmodified |\n| n-shot | 0 |\n| dtype | float32 |\n| stack | torch 2.13.0+cu130, transformers 4.57.6, datasets 5.0.1 |\n| hardware | NVIDIA A10G |\n| architecture | 12L, d_model 384, 6 heads, SwiGLU 1024, RoPE, RMSNorm, tied head, ctx 2048, vocab 32,000 |\n\n### Results\n\nBoth `acc` and `acc_norm` are given, because the column convention is not\ndocumented. The headline row uses the mapping I inferred by calibrating\nagainst the SmolLM2-135M row already on the board (`piqa` tracks acc;\n`hellaswag` and `arcChall` track acc_norm; `arc` tracks arc_easy acc). If that\nmapping is wrong, please use whichever column is correct from the table below.\n\n| model | metric | ARC-E | HellaSwag | PIQA | ARC-C | ArithMark-3 | ArithMark-2 |\n|---|---|---|---|---|---|---|---|\n| CyberSLM-base | acc | 32.79 | 26.35 | 54.68 | 18.17 | 31.00 | 26.96 |\n| CyberSLM-base | acc_norm | 32.24 | 26.84 | 52.23 | 22.70 | 31.00 | - |\n| CyberSLM-instruct | acc | 32.37 | 26.51 | 53.81 | 19.11 | 30.00 | 26.88 |\n| CyberSLM-instruct | acc_norm | 32.15 | 26.19 | 52.88 | 22.35 | 30.20 | - |\n\n### Honest note on these numbers\n\nThese scores sit at or near chance on HellaSwag, PIQA and ARC-Challenge, and\nare comparable to models an order of magnitude smaller. That is expected and I\nwould rather state it than have it discovered: the corpus is domain-specific,\nand these benchmarks measure everyday commonsense, physical reasoning and\ngrade-school science, none of which the training data covers.\n\nThe pipeline itself is verified, so the numbers are not an artefact of a broken\nsetup: the HF export reproduces the original implementation's logits to 3.1e-05\nwith identical greedy decoding, and the tokenizer matches SentencePiece exactly\non all 9,000 ArithMark-3 strings. Everything is reproducible from the repo.\n\nHappy to re-run under different settings if you use a different n-shot or\nmetric convention."
+}

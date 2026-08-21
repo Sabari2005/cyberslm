@@ -149,16 +149,21 @@ def run_arithmark(model_id: str, tag: str, version: str = "3"):
 
     out_dir = Path(f"/results/arithmark{version}_{tag}")
     out_dir.mkdir(parents=True, exist_ok=True)
-    cmd = [
-        sys.executable, str(script),
-        "--model", model_id,
-        "--data-path", str(data),
-        "--device", "cuda",
-        "--dtype", "float32",          # batch-size-stable reference scoring
-        "--batch-size", "32",
-        "--primary-metric", "acc_norm",
-        "--results-dir", str(out_dir),
-    ]
+    # ArithMark-2's script is older and accepts only --model / --tokenizer /
+    # --batch-size / --data-path / --force-download. Passing v3's flags to it
+    # exits 2, so each version gets exactly the arguments it understands.
+    if version == "3":
+        cmd = [sys.executable, str(script),
+               "--model", model_id, "--data-path", str(data),
+               "--device", "cuda",
+               "--dtype", "float32",     # batch-size-stable reference scoring
+               "--batch-size", "32",
+               "--primary-metric", "acc_norm",
+               "--results-dir", str(out_dir)]
+    else:
+        cmd = [sys.executable, str(script),
+               "--model", model_id, "--data-path", str(data),
+               "--batch-size", "16"]
     print("  $ " + " ".join(cmd), flush=True)
     proc = subprocess.run(cmd, capture_output=True, text=True, timeout=90 * 60)
     print(proc.stdout[-6000:], flush=True)
