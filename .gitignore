@@ -74,3 +74,4 @@ models/
 hf_export/
 bench/*/arithmark*.jsonl
 bench/*/*.jsonl
+bench/leaderboard/
